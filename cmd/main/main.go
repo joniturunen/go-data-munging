@@ -38,13 +38,14 @@ func parseData(twoDimSlice [][]string) []Weather {
 		for i, str := range slicedStr {
 			slicedStr[i] = removeNonNumericalChars(str)
 			// log.Println(slicedStr[i])
+			// TODO: Convert to int
 		}
 		log.Println(slicedStr)
 		// log.Printf("Splitted string is: %T\n", splittedStr)
-		// TODO: convert splittedStr to int values
 		// TODO: create a Weather struct with the values
 		// TODO: find the day with the smallest temperature spread
 	}
+	// TODO: return weather struct
 	return nil
 }
 
