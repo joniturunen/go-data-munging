@@ -2,58 +2,37 @@ package main
 
 import (
 	"log"
-	"regexp"
-	"strings"
 )
 
 type Weather struct {
 	dayNumber int
 	maxTemp   int
 	minTemp   int
+	tempDiff  int
 }
 
 func main() {
+	// Read the data from the file, returns a slice of slices of strings
 	rawData := readFile()
-	parseData(rawData)
+	// Parse the data, returns a slice of Weather structs
+	w := parseData(rawData)
 
+	resultDay, resultTempDiff := getLowestTempDiff(w)
+	log.Printf("The day with the lowest temperature difference is day %d with a difference of %d", resultDay, resultTempDiff)
 }
 
-func parseData(twoDimSlice [][]string) []Weather {
-	// Get heading from first row
-	h := twoDimSlice[0]
-	// Make a slice of the headings
-	h[0] = strings.Join(strings.Fields(h[0]), " ")
-	// Use just the first three headings
-	heading := strings.Split(h[0], " ")[:3]
-	// Print out the headings for reference
-	log.Println(heading)
-	// Remove the last row which is precalculated averages
-	twoDimSlice = twoDimSlice[1 : len(twoDimSlice)-1]
-	for _, record := range twoDimSlice {
-		cleandStr := strings.Join(strings.Fields(record[0]), " ")
-		slicedStr := strings.Split(cleandStr, " ")
-		slicedStr = slicedStr[0:3]
-		for i, str := range slicedStr {
-			slicedStr[i] = removeNonNumericalChars(str)
-			// log.Println(slicedStr[i])
-			// TODO: Convert to int
-		}
-		log.Println(slicedStr)
-		// log.Printf("Splitted string is: %T\n", splittedStr)
-		// TODO: create a Weather struct with the values
-		// TODO: find the day with the smallest temperature spread
-	}
-	// TODO: return weather struct
-	return nil
-}
-
-func removeNonNumericalChars(s string) string {
-	// Check if string starts with numerical value
-	if numVal, _ := regexp.MatchString(`^\d`, s); numVal {
-		reg, err := regexp.Compile("[^0-9]+")
-		if err != nil {
-			log.Fatal(err)
+// Get the lowest temperature difference and return the day number
+func getLowestTempDiff(w []Weather) (int, int) {
+	var lowestTempDiff int
+	var lowestTempDiffDay int
+	for i, record := range w {
+		if i == 0 {
+			lowestTempDiff = record.tempDiff
+			lowestTempDiffDay = record.dayNumber
+		} else if record.tempDiff < lowestTempDiff {
+			lowestTempDiff = record.tempDiff
+			lowestTempDiffDay = record.dayNumber
 		}
 	}
-	return s
+	return lowestTempDiffDay, lowestTempDiff
 }
