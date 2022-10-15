@@ -54,7 +54,6 @@ func removeNonNumericalChars(s string) string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		return reg.ReplaceAllString(s, "")
 	}
 	return s
 }
