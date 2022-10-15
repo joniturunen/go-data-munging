@@ -22,6 +22,8 @@ The file [football.dat](http://codekata.com/data/04/football.dat) contains the *
 - Previous implementation was too specific to the weather data and read only first three columns
 - Modify ParseData to read columns matching the first row of the file `parsedata(twoDimStrSlice[][], sliceOfImportantColumns[]) sliceOfStructs[]`
   - Can I make a dynamic slice of structs? `[]struct{}`?
+  - I might need to take a look at [reflect](https://golang.org/pkg/reflect/) package
+  - Or I can just use a map `map[string]interface{}` and use the column names as keys
 
 > Might **really** need TDD this time 🤔
 
